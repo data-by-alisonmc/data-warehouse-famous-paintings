@@ -124,7 +124,7 @@ evidencias en capturas/    capturas de cada etapa
 
 ## Fuente de los datos
 
-Dataset "Famous Paintings" de Kaggle: <!-- PEGAR AQUÍ EL ENLACE DEL DATASET -->
+Dataset [Famous Paintings](https://www.kaggle.com/datasets/mexwell/famous-paintings), publicado en Kaggle por mexwell.
 
 ---
 
