@@ -1,0 +1,12 @@
+# Archivos internos de Visual Studio (no forman parte del proyecto)
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.settings
+*.database
+
+# Copias repetidas o versiones viejas
+Diagramas/Documentacion_FamousPaintings.pdf
+Diagramas/version_anterior/

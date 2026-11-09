@@ -1,0 +1,59 @@
+erDiagram
+  Dim_Obra ||--o{ Fact_PrecioObra : ObraKey
+  Dim_Artista ||--o{ Fact_PrecioObra : ArtistaKey
+  Dim_Museo ||--o{ Fact_PrecioObra : MuseoKey
+  Dim_Tamano ||--o{ Fact_PrecioObra : TamanoKey
+  Dim_Estilo ||--o{ Fact_PrecioObra : EstiloKey
+  Dim_Tema ||--o{ Fact_PrecioObra : TemaKey
+  Fact_PrecioObra {
+    int ObraKey PK,FK
+    int ArtistaKey FK
+    int MuseoKey FK
+    int TamanoKey PK,FK
+    int EstiloKey FK
+    int TemaKey FK
+    decimal PrecioVenta
+    decimal PrecioRegular
+    decimal Descuento
+  }
+  Dim_Obra {
+    int ObraKey PK
+    int work_id UK
+    nvarchar NombreObra
+    nvarchar UrlImagen
+  }
+  Dim_Artista {
+    int ArtistaKey PK
+    int artist_id UK
+    nvarchar NombreCompleto
+    nvarchar Nombre
+    nvarchar Apellido
+    nvarchar Nacionalidad
+    nvarchar EstiloArtista
+    int Nacimiento
+    int Muerte
+  }
+  Dim_Museo {
+    int MuseoKey PK
+    int museum_id UK
+    nvarchar NombreMuseo
+    nvarchar Ciudad
+    nvarchar Estado
+    nvarchar Pais
+    int DiasAbiertoSemana
+  }
+  Dim_Tamano {
+    int TamanoKey PK
+    int size_id UK
+    int Ancho
+    int Alto
+    nvarchar Etiqueta
+  }
+  Dim_Estilo {
+    int EstiloKey PK
+    nvarchar Estilo UK
+  }
+  Dim_Tema {
+    int TemaKey PK
+    nvarchar Tema UK
+  }

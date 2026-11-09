@@ -1,0 +1,13 @@
+flowchart LR
+  subgraph E["Extracción y preparación"]
+    T1["1 SQL Limpiar staging"] --> T2["2 DFT Cargar staging<br/>8 CSV → 8 tablas stg"] --> T3["3 SQL Limpiar DW"]
+  end
+  subgraph D["Transformación y carga de dimensiones"]
+    T4["4 SQL Dim_Artista"] --> T5["5 SQL Dim_Museo"] --> T6["6 SQL Dim_Tamano"] --> T7["7 SQL Dim_Estilo"] --> T8["8 SQL Dim_Tema"] --> T9["9 SQL Dim_Obra"]
+  end
+  subgraph H["Errores, hechos y validación"]
+    T10["10 SQL Registrar errores<br/>→ stg.ErroresPrecio (328)"] --> T11["11 SQL Cargar Fact_PrecioObra<br/>(109 332)"]
+    T11 -.-> V["Validación en SSMS<br/>02_Validacion_DW.sql"]
+  end
+  T3 --> T4
+  T9 --> T10

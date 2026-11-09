@@ -1,0 +1,15 @@
+// PROYECTO: Data Warehouse Famous Paintings
+// SCRIPT 03: Prueba del modelo tabular SSAS_FamousPaintings (desplegado en PEGASUSPLUS)
+// DÓNDE SE EJECUTA: SSMS -> Conectar -> Analysis Services (PEGASUSPLUS)
+//                   -> seleccionar la base SSAS_FamousPaintings -> botón "DAX" (nueva consulta) -> F5
+// Ofertas, obras y precio promedio por estilo (dimensión Dim_Estilo)
+// Total esperado (igual que en SQL): 109 332 ofertas y 14 630 obras
+EVALUATE
+SUMMARIZECOLUMNS (
+    ROLLUPADDISSUBTOTAL ( Dim_Estilo[Estilo], "Es Total" ),
+    "Ofertas", [Ofertas],
+    "Obras", [Obras],
+    "Precio Venta Promedio", [Precio Venta Promedio],
+    "Descuento Promedio", [Descuento Promedio]
+)
+ORDER BY [Es Total] DESC, [Ofertas] DESC

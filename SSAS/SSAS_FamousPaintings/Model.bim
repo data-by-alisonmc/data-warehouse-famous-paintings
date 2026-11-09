@@ -1,0 +1,522 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1500,
+  "model": {
+    "culture": "es-CR",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "SQL/PEGASUSPLUS;DW_FamousPaintings",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": "PEGASUSPLUS",
+            "database": "DW_FamousPaintings"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "UsernamePassword",
+          "kind": "SQL",
+          "path": "pegasusplus;DW_FamousPaintings",
+          "Username": "sa",
+          "EncryptConnection": false
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "Dim_Obra",
+        "description": "Una fila por obra de arte (work.csv + image_link.csv)",
+        "columns": [
+          {
+            "name": "ObraKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "ObraKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "work_id",
+            "dataType": "int64",
+            "sourceColumn": "work_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "NombreObra",
+            "dataType": "string",
+            "sourceColumn": "NombreObra"
+          },
+          {
+            "name": "UrlImagen",
+            "dataType": "string",
+            "sourceColumn": "UrlImagen"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Obra",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/PEGASUSPLUS;DW_FamousPaintings\",",
+                "    dbo_Dim_Obra = Source{[Schema=\"dbo\",Item=\"Dim_Obra\"]}[Data],",
+                "    Columnas = Table.SelectColumns(dbo_Dim_Obra, {\"ObraKey\", \"work_id\", \"NombreObra\", \"UrlImagen\"})",
+                "in",
+                "    Columnas"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_Artista",
+        "description": "Una fila por artista (artist.csv)",
+        "columns": [
+          {
+            "name": "ArtistaKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "ArtistaKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "artist_id",
+            "dataType": "int64",
+            "sourceColumn": "artist_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "NombreCompleto",
+            "dataType": "string",
+            "sourceColumn": "NombreCompleto"
+          },
+          {
+            "name": "Nombre",
+            "dataType": "string",
+            "sourceColumn": "Nombre"
+          },
+          {
+            "name": "Apellido",
+            "dataType": "string",
+            "sourceColumn": "Apellido"
+          },
+          {
+            "name": "Nacionalidad",
+            "dataType": "string",
+            "sourceColumn": "Nacionalidad"
+          },
+          {
+            "name": "EstiloArtista",
+            "dataType": "string",
+            "sourceColumn": "EstiloArtista"
+          },
+          {
+            "name": "Nacimiento",
+            "dataType": "int64",
+            "sourceColumn": "Nacimiento",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Muerte",
+            "dataType": "int64",
+            "sourceColumn": "Muerte",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Artista",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/PEGASUSPLUS;DW_FamousPaintings\",",
+                "    dbo_Dim_Artista = Source{[Schema=\"dbo\",Item=\"Dim_Artista\"]}[Data],",
+                "    Columnas = Table.SelectColumns(dbo_Dim_Artista, {\"ArtistaKey\", \"artist_id\", \"NombreCompleto\", \"Nombre\", \"Apellido\", \"Nacionalidad\", \"EstiloArtista\", \"Nacimiento\", \"Muerte\"})",
+                "in",
+                "    Columnas"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_Museo",
+        "description": "Una fila por museo + 'Sin museo' (museum.csv + museum_hours.csv)",
+        "columns": [
+          {
+            "name": "MuseoKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "MuseoKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "museum_id",
+            "dataType": "int64",
+            "sourceColumn": "museum_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "NombreMuseo",
+            "dataType": "string",
+            "sourceColumn": "NombreMuseo"
+          },
+          {
+            "name": "Ciudad",
+            "dataType": "string",
+            "sourceColumn": "Ciudad"
+          },
+          {
+            "name": "Estado",
+            "dataType": "string",
+            "sourceColumn": "Estado"
+          },
+          {
+            "name": "Pais",
+            "dataType": "string",
+            "sourceColumn": "Pais"
+          },
+          {
+            "name": "DiasAbiertoSemana",
+            "dataType": "int64",
+            "sourceColumn": "DiasAbiertoSemana",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Museo",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/PEGASUSPLUS;DW_FamousPaintings\",",
+                "    dbo_Dim_Museo = Source{[Schema=\"dbo\",Item=\"Dim_Museo\"]}[Data],",
+                "    Columnas = Table.SelectColumns(dbo_Dim_Museo, {\"MuseoKey\", \"museum_id\", \"NombreMuseo\", \"Ciudad\", \"Estado\", \"Pais\", \"DiasAbiertoSemana\"})",
+                "in",
+                "    Columnas"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_Tamano",
+        "description": "Una fila por tamaño de lienzo (canvas_size.csv)",
+        "columns": [
+          {
+            "name": "TamanoKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TamanoKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "size_id",
+            "dataType": "int64",
+            "sourceColumn": "size_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Ancho",
+            "dataType": "int64",
+            "sourceColumn": "Ancho",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Alto",
+            "dataType": "int64",
+            "sourceColumn": "Alto",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Etiqueta",
+            "dataType": "string",
+            "sourceColumn": "Etiqueta"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Tamano",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/PEGASUSPLUS;DW_FamousPaintings\",",
+                "    dbo_Dim_Tamano = Source{[Schema=\"dbo\",Item=\"Dim_Tamano\"]}[Data],",
+                "    Columnas = Table.SelectColumns(dbo_Dim_Tamano, {\"TamanoKey\", \"size_id\", \"Ancho\", \"Alto\", \"Etiqueta\"})",
+                "in",
+                "    Columnas"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_Estilo",
+        "description": "Estilos artísticos de las obras + 'Sin estilo'",
+        "columns": [
+          {
+            "name": "EstiloKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "EstiloKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Estilo",
+            "dataType": "string",
+            "sourceColumn": "Estilo"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Estilo",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/PEGASUSPLUS;DW_FamousPaintings\",",
+                "    dbo_Dim_Estilo = Source{[Schema=\"dbo\",Item=\"Dim_Estilo\"]}[Data],",
+                "    Columnas = Table.SelectColumns(dbo_Dim_Estilo, {\"EstiloKey\", \"Estilo\"})",
+                "in",
+                "    Columnas"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Dim_Tema",
+        "description": "Tema (o combinación de temas) de cada obra + 'Sin tema'",
+        "columns": [
+          {
+            "name": "TemaKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TemaKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Tema",
+            "dataType": "string",
+            "sourceColumn": "Tema"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Dim_Tema",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/PEGASUSPLUS;DW_FamousPaintings\",",
+                "    dbo_Dim_Tema = Source{[Schema=\"dbo\",Item=\"Dim_Tema\"]}[Data],",
+                "    Columnas = Table.SelectColumns(dbo_Dim_Tema, {\"TemaKey\", \"Tema\"})",
+                "in",
+                "    Columnas"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Fact_PrecioObra",
+        "description": "Grano: una fila por obra ofrecida en un tamaño de lienzo (product_size.csv)",
+        "columns": [
+          {
+            "name": "ObraKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "ObraKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "ArtistaKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "ArtistaKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "MuseoKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "MuseoKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "TamanoKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TamanoKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "EstiloKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "EstiloKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "TemaKey",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TemaKey",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "PrecioVenta",
+            "dataType": "double",
+            "sourceColumn": "PrecioVenta",
+            "formatString": "#,0.00",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "PrecioRegular",
+            "dataType": "double",
+            "sourceColumn": "PrecioRegular",
+            "formatString": "#,0.00",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Descuento",
+            "dataType": "double",
+            "sourceColumn": "Descuento",
+            "formatString": "#,0.00",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Fact_PrecioObra",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/PEGASUSPLUS;DW_FamousPaintings\",",
+                "    dbo_Fact_PrecioObra = Source{[Schema=\"dbo\",Item=\"Fact_PrecioObra\"]}[Data],",
+                "    Columnas = Table.SelectColumns(dbo_Fact_PrecioObra, {\"ObraKey\", \"ArtistaKey\", \"MuseoKey\", \"TamanoKey\", \"EstiloKey\", \"TemaKey\", \"PrecioVenta\", \"PrecioRegular\", \"Descuento\"})",
+                "in",
+                "    Columnas"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Ofertas",
+            "description": "Número de combinaciones obra-tamaño con precio",
+            "expression": "COUNTROWS('Fact_PrecioObra')",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Obras",
+            "description": "Número de obras distintas",
+            "expression": "DISTINCTCOUNT('Fact_PrecioObra'[ObraKey])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Precio Venta Promedio",
+            "description": "Promedio del precio de venta",
+            "expression": "AVERAGE('Fact_PrecioObra'[PrecioVenta])",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Precio Regular Promedio",
+            "description": "Promedio del precio regular",
+            "expression": "AVERAGE('Fact_PrecioObra'[PrecioRegular])",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Precio Venta Minimo",
+            "description": "Precio de venta más bajo",
+            "expression": "MIN('Fact_PrecioObra'[PrecioVenta])",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Precio Venta Maximo",
+            "description": "Precio de venta más alto",
+            "expression": "MAX('Fact_PrecioObra'[PrecioVenta])",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Descuento Promedio",
+            "description": "Promedio de (precio regular - precio de venta)",
+            "expression": "AVERAGE('Fact_PrecioObra'[Descuento])",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "% Descuento",
+            "description": "Descuento total / precio regular total",
+            "expression": "DIVIDE(SUM('Fact_PrecioObra'[Descuento]), SUM('Fact_PrecioObra'[PrecioRegular]))",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "fdec65fe-7212-4737-b222-d7283ab5a383",
+        "fromTable": "Fact_PrecioObra",
+        "fromColumn": "ObraKey",
+        "toTable": "Dim_Obra",
+        "toColumn": "ObraKey"
+      },
+      {
+        "name": "d4d49510-4513-49a4-9354-8b905e5c7474",
+        "fromTable": "Fact_PrecioObra",
+        "fromColumn": "ArtistaKey",
+        "toTable": "Dim_Artista",
+        "toColumn": "ArtistaKey"
+      },
+      {
+        "name": "0a3bf4d9-c097-4e13-89a5-b1d8560d8297",
+        "fromTable": "Fact_PrecioObra",
+        "fromColumn": "MuseoKey",
+        "toTable": "Dim_Museo",
+        "toColumn": "MuseoKey"
+      },
+      {
+        "name": "ab00ca3e-e989-4e77-b218-d06eec35bea1",
+        "fromTable": "Fact_PrecioObra",
+        "fromColumn": "TamanoKey",
+        "toTable": "Dim_Tamano",
+        "toColumn": "TamanoKey"
+      },
+      {
+        "name": "99fb6ec6-63bc-45c1-8c1a-87369f4b56d2",
+        "fromTable": "Fact_PrecioObra",
+        "fromColumn": "EstiloKey",
+        "toTable": "Dim_Estilo",
+        "toColumn": "EstiloKey"
+      },
+      {
+        "name": "1eefb5c0-fe3f-4f14-a06f-c89649f9b43a",
+        "fromTable": "Fact_PrecioObra",
+        "fromColumn": "TemaKey",
+        "toTable": "Dim_Tema",
+        "toColumn": "TemaKey"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "600"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}

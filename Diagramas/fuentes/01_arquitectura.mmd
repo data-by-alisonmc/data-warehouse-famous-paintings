@@ -1,0 +1,22 @@
+flowchart LR
+  subgraph PC["Equipo PEGASUSPLUS"]
+    subgraph SRC["Fuentes: carpeta Famous Paintings (8 CSV)"]
+      F["artist · canvas_size · image_link · museum<br/>museum_hours · product_size · subject · work"]
+    end
+    subgraph SSIS["SSIS (Visual Studio 2022)"]
+      P["ETL_FamousPaintings.dtsx<br/>11 tareas: DFT Cargar staging + 10 Execute SQL"]
+    end
+    subgraph SQL["SQL Server 2019 - DW_FamousPaintings"]
+      STG["Esquema stg<br/>8 tablas + stg.ErroresPrecio"]
+      DBO["Esquema dbo<br/>Fact_PrecioObra + 6 dimensiones"]
+    end
+    subgraph SSAS["SSAS 2019 Tabular"]
+      M["SSAS_FamousPaintings<br/>7 tablas · 6 relaciones · 8 medidas DAX"]
+    end
+    Q["SSMS: Examinar y consultas DAX"]
+  end
+  F -->|"1. Extracción"| P
+  P -->|"1. Carga"| STG
+  STG -->|"2. Transformación (Execute SQL)"| DBO
+  DBO -->|"3. Procesamiento"| M
+  M -->|"4. Consultas"| Q

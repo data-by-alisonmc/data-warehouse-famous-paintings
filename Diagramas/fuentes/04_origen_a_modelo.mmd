@@ -1,0 +1,15 @@
+flowchart LR
+  a["artist.csv"] --> sa["stg.artist"] --> DA["Dim_Artista (421)"]
+  m["museum.csv"] --> sm["stg.museum"] --> DM["Dim_Museo (58)"]
+  h["museum_hours.csv"] --> sh["stg.museum_hours"] --> DM
+  c["canvas_size.csv"] --> sc["stg.canvas_size"] --> DT["Dim_Tamano (200)"]
+  w["work.csv"] --> sw["stg.work"]
+  sw --> DE["Dim_Estilo (24)"]
+  sw --> DO["Dim_Obra (14 716)"]
+  i["image_link.csv"] --> si["stg.image_link"] --> DO
+  s["subject.csv"] --> ss["stg.subject"] --> DTe["Dim_Tema (152)"]
+  p["product_size.csv"] --> sp["stg.product_size"]
+  sp --> F["Fact_PrecioObra (109 332)"]
+  sp --> ER["stg.ErroresPrecio (328)"]
+  sw -.->|búsqueda de claves| F
+  ss -.->|búsqueda de claves| F
